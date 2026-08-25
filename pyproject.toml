@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bio-pfm"
+version = "0.1.0"
+description = "Biological Pattern Formation Models (BPFM): published computational models for biological pattern formation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "License TBD before public release" }
+authors = [{ name = "Pattern Formation Model Atlas contributors" }]
+keywords = [
+  "pattern-formation",
+  "morphogenesis",
+  "biological-modeling",
+  "reaction-diffusion",
+]
+dependencies = [
+  "numpy>=1.20",
+  "scipy>=1.7",
+  "matplotlib>=3.4",
+]
+
+[project.urls]
+Lab-Atlas = "https://github.com/"  # fill when public URLs are known
+
+[tool.setuptools.packages.find]
+where = ["src"]
