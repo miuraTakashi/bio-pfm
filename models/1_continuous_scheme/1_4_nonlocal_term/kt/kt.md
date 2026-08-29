@@ -26,8 +26,8 @@ $K$ はメキシカンハット型などの非局所カーネル、$\nu$ は飽�
 
 ## 出典（原著・標準文献）
 
-- Kondo, S. (2017). An updated kernel-based Turing model for studying the mechanisms of biological pattern formation. *Journal of Theoretical Biology*, 414, 120–127. <https://doi.org/10.1016/j.jtbi.2016.11.013>
-- Ei, S.-I., et al. (2021). *Journal of Theoretical Biology*, 509, 110496（式 (1.4) 周辺の要約として参照されている例）。
+- Kondo, S. (2017). An updated kernel-based Turing model for studying the mechanisms of biological pattern formation. *Journal of Theoretical Biology*, 414, 120–127. <https://doi.org/10.1016/j.jtbi.2016.11.003>
+- Ei, S.-I., et al. (2021). Effective nonlocal kernels on reaction–diffusion networks. *Journal of Theoretical Biology*, 509, 110496（式 (1.4) 周辺の要約として参照されている例）。
 
 ## 数値計算スキーム
 

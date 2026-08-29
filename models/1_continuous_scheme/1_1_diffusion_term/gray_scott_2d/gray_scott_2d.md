@@ -16,7 +16,7 @@ Gray–Scott 反応–拡散系（2 成分、拡散係数比と反応項で多�
 
 ## 出典（原著・標準文献）
 
-- Pearson, J. E. (1993). *Science*, 261(5118), 189–192. <https://doi.org/10.1126/science.261.5118.189>（図3の 12 分類 α–μ）
+- Pearson, J. E. (1993). Complex patterns in a simple system. *Science*, 261(5118), 189–192. <https://doi.org/10.1126/science.261.5118.189>（図3の 12 分類 α–μ）
 - 各 (F, k) の代表点: Munafo, *Pearson's Classification*（xmorphia） <https://mrob.com/pub/comp/xmorphia/pearson-classes.html>
 - **Mathematica**: [`1.1.11.GrayScott.nb`](../../../../Mathematica/1_continuous_scheme/1_1_diffusion_term/gray_scott_1d/1.1.11.GrayScott.nb)
 

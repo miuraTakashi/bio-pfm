@@ -23,7 +23,7 @@ $$
 
 - FitzHugh, R. (1961). Impulses and physiological states in theoretical models of nerve membrane. *Biophysical Journal*, 1(6), 445–466. <https://doi.org/10.1016/S0006-3495(61)86902-6>
 - Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). An active pulse transmission line simulating nerve axon. *Proceedings of the IRE*, 50(10), 2061–2070. <https://doi.org/10.1109/JRPROC.1962.288235>
-- 総説・教科書的整理: Izhikevich, E. M. (2007). *Dynamical Systems in Neuroscience* (FIT 型モデルの文脈). MIT Press.
+- 総説・教科書的整理: Izhikevich, E. M. (2007). *Dynamical Systems in Neuroscience: The Geometry of Excitability and Bursting* (FIT 型モデルの文脈). MIT Press. <https://doi.org/10.7551/mitpress/2526.001.0001>
 
 ## 数値計算スキーム
 

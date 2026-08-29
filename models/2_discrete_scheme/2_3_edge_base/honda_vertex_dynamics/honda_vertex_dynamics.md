@@ -24,7 +24,7 @@ $$
 
 ## 出典（原著・標準文献）
 
-- Honda, H. (1978). Description of cellular patterns in phase transitions. *Journal of Theoretical Biology*, 72(3), 523–543. <https://doi.org/10.1016/0022-5193(78)90202-6>
+- Honda, H. (1978). Description of cellular patterns by Dirichlet domains: the two-dimensional case. *Journal of Theoretical Biology*, 72(3), 523–543. <https://doi.org/10.1016/0022-5193(78)90315-6>
 - 上皮頂点モデルのレビュー的整理: Alt, S., Ganguly, P., & Salbreux, G. (2017). Vertex models: from cell mechanics to tissue morphogenesis. *Philosophical Transactions of the Royal Society B*, 372(1720), 20150520. <https://doi.org/10.1098/rstb.2015.0520>
 - Farhadifar, R., et al. (2007). The influence of cell mechanics, cell–cell interactions, and proliferation on epithelial packing. *Current Biology*, 17(24), 2095–2104. <https://doi.org/10.1016/j.cub.2007.11.049>
 

@@ -85,8 +85,8 @@ python3 swift_hohenberg_3d.py
 
 ## 出典
 
-- Swift & Hohenberg (1977). *Phys. Rev. A* **15**, 319–328.
-- Cross & Hohenberg (1993). *Rev. Mod. Phys.* **65**, 851–1112.
+- Swift & Hohenberg (1977). Hydrodynamic fluctuations at the convective instability. *Phys. Rev. A* **15**, 319–328.
+- Cross & Hohenberg (1993). Pattern formation outside of equilibrium. *Rev. Mod. Phys.* **65**, 851–1112.
 - 2D 実装: [`../Swift_Hohenberg_2d`](../Swift_Hohenberg_2d/README.md)
 
 ## 依存

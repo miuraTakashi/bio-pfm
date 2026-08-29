@@ -38,7 +38,7 @@ $$
   キネティック項・異方性を含むフェーズフィールド方程式と熱（拡散）場の結合によるデンドライト分枝の数値デモの出発点。
 - **Karma, A. & Rappel, W.-J.** “Quantitative phase-field modeling of dendritic growth in two and three dimensions.” *Physical Review E* **57**, 4323–4349 (1998). <https://doi.org/10.1103/PhysRevE.57.4323>  
   Kobayashi 系を踏まえた**薄界面極限との整合**を重視した定量フェーズフィールドモデリング（分枝・先端速度などの精密化）。
-- **Murray, J. D.** *Mathematical Biology I: An Introduction*（3rd ed., Springer, 2002）— 反応拡散・パターン形成の応用数学の文脈。
+- **Murray, J. D.** *Mathematical Biology I: An Introduction*（3rd ed., Springer, 2002）. <https://doi.org/10.1007/b98868> — 反応拡散・パターン形成の応用数学の文脈。
 
 本コードの具体的な $f,g$（および Mathematica ノート由来の離散式）は **アトラス用デモ**であり、上記の凝固フェーズフィールドと式を 1 対 1 で同一視するものではないが、**秩序場 $u$ と遅い拡散場 $v$ の 2 場構造＋界面近傍の不安定化**という読み方では Kobayashi 系の系譜に位置づけられる。
 

@@ -70,7 +70,7 @@ $$
 
 ## 出典
 
-- Turing, A. M. (1952). *Phil. Trans. R. Soc. B*, 237, 37–72. <https://doi.org/10.1098/rstb.1952.0012>
-- Gierer, A., & Meinhardt, H. (1972). *Kybernetik*, 12, 30–39. <https://doi.org/10.1007/BF00289234>
+- Turing, A. M. (1952). The chemical basis of morphogenesis. *Phil. Trans. R. Soc. B*, 237, 37–72. <https://doi.org/10.1098/rstb.1952.0012>
+- Gierer, A., & Meinhardt, H. (1972). A theory of biological pattern formation. *Kybernetik*, 12, 30–39. <https://doi.org/10.1007/BF00289234>
 - Kondo, S., & Asai, R. (1995). A reaction-diffusion wave on the skin of the marine angelfish *Pomacanthus*. *Nature*, 376, 765–768. <https://doi.org/10.1038/376765a0>
 - Miura, T., & Maini, P. K. (2004). Speed of pattern appearance in reaction-diffusion models: Implications in the pattern formation of limb bud mesenchyme cells. *Bulletin of Mathematical Biology*, 66, 627–649.

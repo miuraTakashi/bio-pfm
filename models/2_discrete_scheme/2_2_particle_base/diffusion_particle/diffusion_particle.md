@@ -22,7 +22,7 @@ $$
 ## 出典（原著・標準文献）
 
 - Einstein, A. (1905). Über die von der molekularkinetischen Theorie der Wärme geforderte Bewegung von in ruhenden Flüssigkeiten suspendierten Teilchen. *Annalen der Physik*, 322(8), 549–560. <https://doi.org/10.1002/andp.19053220806>
-- 教科書的整理: Risken, H. (1989). *The Fokker-Planck Equation*. Springer.
+- 教科書的整理: Risken, H. (1989). *The Fokker–Planck Equation: Methods of Solution and Applications* (2nd ed.). Springer. <https://doi.org/10.1007/978-3-642-61544-3>
 
 ## 数値計算スキーム
 

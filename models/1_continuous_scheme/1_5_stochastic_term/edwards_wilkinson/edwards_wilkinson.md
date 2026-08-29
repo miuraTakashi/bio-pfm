@@ -25,8 +25,8 @@ $$
 
 ## 出典（原著・標準文献）
 
-- Edwards, S. F., & Wilkinson, D. R. (1982). The surface statistics of a granular aggregate. *Proceedings of the Royal Society of London. A*, 381(1780), 17–31. <https://doi.org/10.1098/rspa.1982.0058>
-- Family, F., & Vicsek, T. (1985). Scaling of the interface width in two-dimensional directed percolation. *Journal of Physics A*, 18(2), L75. <https://doi.org/10.1088/0305-4470/18/2/005>
+- Edwards, S. F., & Wilkinson, D. R. (1982). The surface statistics of a granular aggregate. *Proceedings of the Royal Society of London. A*, 381(1780), 17–31. <https://doi.org/10.1098/rspa.1982.0056>
+- Family, F., & Vicsek, T. (1985). Scaling of the active zone in the Eden process on percolation networks and the ballistic deposition model. *Journal of Physics A: Mathematical and General*, 18(2), L75–L81. <https://doi.org/10.1088/0305-4470/18/2/005>
 - **Mathematica**: [`Edwards-Wilkinson.nb`](../../../../Mathematica/1_continuous_scheme/1_5_stochastic_term/edwards_wilkinson/Edwards-Wilkinson.nb)
 
 ## 数値計算スキーム

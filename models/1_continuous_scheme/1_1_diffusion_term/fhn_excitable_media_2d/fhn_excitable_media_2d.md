@@ -19,9 +19,9 @@ $$
 
 ## 出典（原著・標準文献）
 
-- FitzHugh, R. (1961). *Biophysical Journal*, 1(6), 445–466. <https://doi.org/10.1016/S0006-3495(61)86902-6>
+- FitzHugh, R. (1961). Impulses and Physiological States in Theoretical Models of Nerve Membrane. *Biophysical Journal*, 1(6), 445–466. <https://doi.org/10.1016/S0006-3495(61)86902-6>
 - Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). An active pulse transmission line simulating nerve axon. *Proceedings of the IRE*, 50(10), 2061–2070. <https://doi.org/10.1109/JRPROC.1962.288235>
-- 反応–拡散での螺旋波の数学: Winfree, A. T. (1980). *The Geometry of Biological Time*. Springer（総説的）。
+- 反応–拡散での螺旋波の数学: Winfree, A. T. (1980). *The Geometry of Biological Time*. Springer. <https://doi.org/10.1007/978-3-662-22492-2>（総説的）
 
 ## 数値計算スキーム
 

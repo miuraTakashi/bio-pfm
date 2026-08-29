@@ -30,11 +30,11 @@ abla c) = 0$。
   走化性と拡散を結合した古典的パラドックス系の出発点（不安定性による凝集のイメージ）。
 - **Keller, E. F. & Segel, L. A.** “Model for chemotaxis.” *Journal of Theoretical Biology* **30**, 225–234 (1971). <https://doi.org/10.1016/0022-5193(71)90050-6>  
   最小化された Keller–Segel 型の連続モデル。
-- **Horstmann, D.** “From 1970 until present: the Keller–Segel model in chemotaxis and its consequences.” *Jahresbericht der Deutschen Mathematiker-Vereinigung* **105**, 103–165 (2003). <https://doi.org/10.1365/s13291-003-0021-5>  
+- **Horstmann, D.** “From 1970 until present: the Keller–Segel model in chemotaxis and its consequences. I.” *Jahresbericht der Deutschen Mathematiker-Vereinigung* **105**(3), 103–165 (2003). <https://www.mis.mpg.de/publications/preprint-repository/article/2003/issue-3>
   数学的側面（整域・大域時間解・ブローアップ等）の総説。
 - **Painter, K. J. & Hillen, T.** “Volume-filling and quorum-sensing in models for chemosensitive movement.” *Canadian Applied Mathematics Quarterly* **10**, 501–543 (2002).  
   感度係数を密度に依存させる（体積充填・飽和）ことで古典的ブローアップを緩和する枠組み。本スクリプトの $\chi(u)=u(u_s-u)$ は、定数感度の線形化系とは異なる**非線形走化項**に属し、生物学的モチーフ（飽和・上限）と数値的安定性の両面でよく用いられる。
-- **Murray, J. D.** *Mathematical Biology I: An Introduction*（3rd ed., Springer, 2002）— 走化性・パターン形成を含む反応拡散・移流拡散の応用数学の標準的整理。
+- **Murray, J. D.** *Mathematical Biology I: An Introduction*（3rd ed., Springer, 2002）. <https://doi.org/10.1007/b98868> — 走化性・パターン形成を含む反応拡散・移流拡散の応用数学の標準的整理。
 
 連続極限での線形安定解析（`dispersion_matrix` 等）は、上記の線形化 Keller–Segel 文献と同型の Fourier モード解析に相当する。
 

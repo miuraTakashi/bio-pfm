@@ -156,17 +156,17 @@ $$
 
 ## 出典（原著・標準文献）
 
-- **Wolpert, L.** (1968). The French Flag Problem: a contribution to the discussion on pattern development and regeneration. In *Towards a Theoretical Biology* 1 (ed. C. H. Waddington), 125–133. Edinburgh Univ. Press. — French Flag **Problem** と size invariance の最初の明示的定式化。
+- **Wolpert, L.** (1968). “The French Flag problem: a contribution to the discussion on pattern development and regulation.” In *Towards a Theoretical Biology, Vol. 1: Prolegomena* (ed. C. H. Waddington), 125–133. Edinburgh University Press. 2017 reprint: <https://doi.org/10.4324/9781315133638-12>. — French Flag **Problem** と size invariance の最初の明示的定式化。
 - **Wolpert, L.** (1969). Positional information and the spatial pattern of cellular differentiation. *J. Theor. Biol.* **25**(1), 1–47. <https://doi.org/10.1016/0022-5193(69)90016-0> — 節 **(G) The French Flag Problem and Size Invariance**。
 - **Sharpe, J.** (2019). Wolpert's French Flag: what's the problem? *Development* **146**, dev185967. <https://doi.org/10.1242/dev.185967> — Problem と Model の区別、境界条件によるスケーリングの読み方。
-- Turing (1952). *Phil. Trans. R. Soc. B* **237**, 37–72. <https://doi.org/10.1098/rstb.1952.0012>
+- Turing (1952). The chemical basis of morphogenesis. *Phil. Trans. R. Soc. B* **237**, 37–72. <https://doi.org/10.1098/rstb.1952.0012>
 - Murray, J. D. *Mathematical Biology* — 拡散–分解の定常解。
 - **Grimm, Coppey & Wieschaus** (2010). Modelling the Bicoid gradient. *Development* **137**, 2253–2264. <https://doi.org/10.1242/dev.032409>
-- **Gregor et al.** (2007). *Cell* **130**, 153–164; 141–152.
-- **Wartlick, Kicheva & González-Gaitán** (2009). *CSH Perspect. Biol.* **1**, a001255.
-- **Kicheva et al.** (2012). *Curr. Opin. Genet. Dev.* **22**, 527–532.
-- **Müller et al.** (2013). *Development* **140**, 1621–1638.
-- **Teles et al.** (2021). *Nat. Rev. Genet.* **22**, 393–411.
+- **Gregor et al.** (2007). Probing the limits to positional information. *Cell* **130**, 153–164; Stability and nuclear dynamics of the Bicoid morphogen gradient. *Cell* **130**, 141–152.
+- **Wartlick, Kicheva & González-Gaitán** (2009). Morphogen gradient formation. *CSH Perspect. Biol.* **1**, a001255.
+- **Kicheva et al.** (2012). Investigating the principles of morphogen gradient formation: from tissues to cells. *Curr. Opin. Genet. Dev.* **22**, 527–532.
+- **Müller et al.** (2013). Morphogen transport. *Development* **140**, 1621–1638.
+- **Stapornwongkul, K. S., & Vincent, J.-P.** (2021). Generation of extracellular morphogen gradients: the case for diffusion. *Nat. Rev. Genet.* **22**, 393–411. <https://doi.org/10.1038/s41576-021-00342-y>
 
 **Mathematica**: [`1.1.1.MorphogenGradient.nb`](../../../../Mathematica/1_continuous_scheme/1_1_diffusion_term/morphogen_gradient/1.1.1.MorphogenGradient.nb)
 

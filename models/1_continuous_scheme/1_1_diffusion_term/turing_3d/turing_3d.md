@@ -1,7 +1,7 @@
 # 3D Turing patterns — Shoji et al. (2007)
 
 対応スクリプト: [`Turing_3D.py`](Turing_3D.py)  
-原著: Shoji, Yamada, Ueyama & Ohta, *Phys. Rev. E* **75**, 046212 (2007).  
+原著: Shoji, Yamada, Ueyama & Ohta, “Turing patterns in three dimensions.” *Phys. Rev. E* **75**, 046212 (2007).
 [DOI: 10.1103/PhysRevE.75.046212](https://doi.org/10.1103/PhysRevE.75.046212)
 
 3 次元周期箱上で **FitzHugh–Nagumo**・**Brusselator**・**Gray–Scott** の 2 成分反応–拡散を数値積分し、ラメラ・gyroid・BCC/FCC などの定常 Turing 構造を再現する（[`turing_2d`](../turing_2d/README.md) と同型の **半陰式 FFT**）。

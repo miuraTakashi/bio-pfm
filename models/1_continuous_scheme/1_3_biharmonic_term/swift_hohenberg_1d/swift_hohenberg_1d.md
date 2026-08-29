@@ -24,7 +24,7 @@ $$
 ## 出典（原著・標準文献）
 
 - Swift, J., & Hohenberg, P. C. (1977). Hydrodynamic fluctuations at the convective instability. *Physical Review A*, 15(1), 319–328. <https://doi.org/10.1103/PhysRevA.15.319>
-- Cross, M. C., & Hohenberg, P. C. (1993). *Rev. Mod. Phys.*, 65, 851–1112. <https://doi.org/10.1103/RevModPhys.65.851>
+- Cross, M. C., & Hohenberg, P. C. (1993). Pattern formation outside of equilibrium. *Rev. Mod. Phys.*, 65, 851–1112. <https://doi.org/10.1103/RevModPhys.65.851>
 - **Mathematica**: [`1.1.2.SHH1D.nb`](../../../../Mathematica/1_continuous_scheme/1_3_biharmonic_term/swift_hohenberg_1d/1.1.2.SHH1D.nb)
 
 ## 数値計算スキーム

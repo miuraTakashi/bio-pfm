@@ -31,7 +31,7 @@ $$
 
 ## 出典（原著・標準文献）
 
-[`fisher_1d.md`](../fisher_1d/fisher_1d.md) と同様（Fisher 1937; Kolmogorov–Petrovsky–Piskunov 1937 等）。
+[`fisher_1d.md`](../fisher_1d/fisher_1d.md) と同様（Fisher 1937, “The wave of advance of advantageous genes”; Kolmogorov–Petrovskii–Piskunov 1937, “A study of the diffusion equation with increase in the amount of substance, and its application to a biological problem” 等）。
 
 ## パラメータ一覧
 

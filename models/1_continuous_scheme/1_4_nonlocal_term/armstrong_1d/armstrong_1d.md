@@ -29,7 +29,7 @@
 ## 数値計算スキーム
 
 周期境界・FFT 畳み込み・陽的オイラー。  
-2 集団版は Armstrong et al. (2006) §4.2 の logistic 形
+2 集団版は Armstrong et al. (2006), “A continuum approach to modelling cell–cell adhesion,” §4.2 の logistic 形
 $g_{uu}=g_{vu}=u(1-u-v),\ g_{vv}=g_{uv}=v(1-u-v)$（$u+v \lt 1$）を用い、
 Fig.9 キャプションの 4 シナリオ
 

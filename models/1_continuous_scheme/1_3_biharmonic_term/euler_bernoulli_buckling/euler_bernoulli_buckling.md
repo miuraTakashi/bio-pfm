@@ -29,7 +29,9 @@ $$
 
 ## 出典
 
-- 論文 Table `tab:simulation_parameters`（M1 座屈シミュレーション）— コード先頭 docstring のパラメータ表記に準拠。
+- Abramian, A. K., Vakulenko, S. A., van Horssen, W. T., & Lukichev, D. V. (2021). Dynamics and buckling loads for a vibrating damped Euler–Bernoulli beam connected to an inhomogeneous foundation. *Archive of Applied Mechanics*, 91(4), 1291–1308. <https://doi.org/10.1007/s00419-020-01823-y>
+
+本実装では、この文献で扱われる減衰 Euler–Bernoulli 梁、軸方向圧縮による座屈、および弾性基盤という構成を参照し、周期境界上のオーバーダンプ系へ簡略化している。
 
 ## 数値計算スキーム
 

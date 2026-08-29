@@ -6,7 +6,10 @@
 
 - Mochizuki, A., Iwasa, Y., & Takeda, Y. (1996). A stochastic model for cell sorting and measuring cell–cell adhesion. *Journal of Theoretical Biology*, 179(2), 129–146. [doi:10.1006/jtbi.1996.0054](https://doi.org/10.1006/jtbi.1996.0054)
 - PDF: [`Mochizuki et al. 1996 - J. Theor. Biol_.pdf`](Mochizuki%20et%20al.%201996%20-%20J.%20Theor.%20Biol_.pdf)
-- 物理的背景: Kawasaki, K. (1972). Kinetics of Ising models. *Phase Transitions and Critical Phenomena*, Vol. 2.
+- 物理的背景: Kawasaki, K. (1972). “Kinetics of Ising models.” In C. Domb & M. S. Green (eds.), *Phase Transitions and Critical Phenomena*, Vol. 2, 443–501. Academic Press. ISBN 978-0-12-220302-2.
+- Steinberg, M. S. (1962). On the mechanism of tissue reconstruction by dissociated cells, I. Population kinetics, differential adhesiveness, and the absence of directed migration. *Proceedings of the National Academy of Sciences of the United States of America*, 48(9), 1577–1582. <https://doi.org/10.1073/pnas.48.9.1577>
+- Mochizuki, A., Takeda, Y., Ide, H., & Iwasa, Y. (1997). A stochastic model for cell sorting and its application. *Forma*, 12(2), 107–122. <https://forma.katachi-jp.com/abstract/1202/12020107.html>
+- Mochizuki, A., Wada, N., Ide, H., & Iwasa, Y. (1998). Cell-cell adhesion in limb-formation, estimated from photographs of cell sorting experiments based on a spatial stochastic model. *Developmental Dynamics*, 211(3), 204–214. <https://doi.org/10.1002/(SICI)1097-0177(199803)211:3%3C204::AID-AJA2%3E3.0.CO;2-L>
 
 Steinberg (1962) の **差次接着仮説**（differential adhesion）に、細胞の **ランダム運動** を明示的に組み込んだ格子確率モデル。数学的には **スピン交換型 Ising 模型**（Kawasaki dynamics）と等価。
 

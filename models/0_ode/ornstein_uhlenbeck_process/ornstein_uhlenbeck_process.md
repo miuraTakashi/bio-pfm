@@ -34,7 +34,7 @@ $$
 
 - Uhlenbeck, G. E., & Ornstein, L. S. (1930). On the Theory of the Brownian Motion II. *Physical Review*, 36(5), 823–841. <https://doi.org/10.1103/PhysRev.36.823>
 - Gardiner, C. (2009). *Stochastic Methods: A Handbook for the Natural and Social Sciences* (4th ed.). Springer.（OU 過程・Fokker–Planck 方程式の標準的記述）
-- Øksendal, B. (2003). *Stochastic Differential Equations: An Introduction with Applications* (6th ed.). Springer.（Itô 積分・線形 SDE の解法）
+- Øksendal, B. (2003). *Stochastic Differential Equations: An Introduction with Applications* (6th ed.). Springer. <https://doi.org/10.1007/978-3-642-14394-6>（Itô 積分・線形 SDE の解法）
 - 金融・時系列文脈: Vasicek, O. (1977). An equilibrium characterization of the term structure. *Journal of Financial Economics*, 5(2), 177–188.（金利モデルとしての OU / Vasicek モデル）
 
 ## 数値計算スキーム

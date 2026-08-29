@@ -57,7 +57,7 @@ $$
 
 ### 教科書・総説
 
-- **de Gennes, P. G. & Prost, J.** *The Physics of Liquid Crystals*（2nd ed., Oxford University Press, 1995）.  
+- **de Gennes, P. G. & Prost, J.** *The Physics of Liquid Crystals*（2nd ed., Oxford University Press, 1993）. <https://doi.org/10.1093/oso/9780198520245.001.0001>
   ネマティックの秩序変数、弾性（Frank）、揺らぎの章で、ディレクター表示とテンソル表示の物理的背景が整理されている。
 - **Mottram, N. J. & Newton, C. J. P.** “Introduction to Q-tensor theory.” *arXiv*:1409.3542 (2014). <https://doi.org/10.48550/arXiv.1409.3542>  
   2D/3D の $Q$ テンソル定式化、境界条件、Landau–de Gennes エネルギーと平衡・欠陥の数学的枠組みへの入門として、本デモの記号と直結しやすい。
@@ -66,9 +66,9 @@ $$
 
 ### Landau–de Gennes モデルとダイナミクス
 
-- **Beris, A. N. & Edwards, B. J.** *Thermodynamics of Flowing Systems*（Oxford University Press, 1994）.  
+- **Beris, A. N. & Edwards, B. J.** *Thermodynamics of Flowing Systems: With Internal Microstructure*（Oxford University Press, 1994）. <https://doi.org/10.1093/oso/9780195076943.001.0001>
   配向テンソルに対する熱力学的整合な時間発展方程式（流れと結合した一般形）の古典的参照。
-- **Sonnet, A. M., Kilian, A. & Hess, S.** “Alignment tensor versus director: irreversible thermodynamics of nematics.” *Physical Review E* **52**, 718–721 (1995). <https://doi.org/10.1103/PhysRevE.52.718>  
+- **Sonnet, A. M., Kilian, A. & Hess, S.** “Alignment tensor versus director: description of defects in nematic liquid crystals.” *Physical Review E* **52**(1), 718–722 (1995). <https://doi.org/10.1103/PhysRevE.52.718>
   テンソル秩序変数の不可逆熱力学とディレクター記述の関係。
 
 ### 元ノート

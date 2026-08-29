@@ -50,7 +50,7 @@ $$
 
 **ε について**: 上の Allen–Cahn 標準形への書き換えでは ε は記法上のフリーパラメータ。本実装は物理式を直接積分するため **ε は安定性にも時間発展にも入らない**（標準形で ε=1, τ=1, c₀=√σ と同値）。
 
-検算: `beta = ε/(√2 c0) = 1/(√2 √σ)` かつ `F = 0.1(v-v*)` より  
+検算: `beta = ε/(√2 c0) = 1/(√2 √σ)` かつ `F = 0.1(v-v*)` より
 `beta·F = 0.1(v-v*)/√(2σ)` → 旧反応項と一致。
 
 ## phase_field_standard_model との関係
@@ -65,13 +65,13 @@ $$
 
 - **Miura, T. *et al.*** “Mechanism of skull suture maintenance and interdigitation.” *Journal of Anatomy* **215**, 642–655 (2009). <https://doi.org/10.1111/j.1469-7580.2009.01148.x>
 - **Yoshimura, K., Kobayashi, R., Ohmura, T., Kajimoto, Y. & Miura, T.** “A new mathematical model for pattern formation by cranial sutures.” *Journal of Theoretical Biology* **408**, 66–74 (2016). <https://doi.org/10.1016/j.jtbi.2016.08.003>
-- **Shibusawa, N., Endo, Y., Morimoto, N., Takahashi, I. & Miura, T.** “Mathematical modeling of palatal suture pattern formation…” *Scientific Reports* **11**, 88255 (2021). <https://doi.org/10.1038/s41598-021-88255-y>
-- **三浦岳**『発生の数理』第 9 章、京都大学学術出版会、2015 年。ISBN 978-4-87698-887-7。
+- **Shibusawa, N., Endo, Y., Morimoto, N., Takahashi, I. & Miura, T.** “Mathematical modeling of palatal suture pattern formation: morphological differences between sagittal and palatal sutures.” *Scientific Reports* **11**, 88255 (2021). <https://doi.org/10.1038/s41598-021-88255-y>
+- **三浦岳**『発生の数理』第 9 章、京都大学学術出版会、2015 年。ISBN 978-4-87698-887-7。<https://www.kyoto-up.or.jp/books/9784876988877.html>
 
 ### 界面の数学（一般）
 
-- **Cahn, J. W. & Hilliard, J. E.** (1958). <https://doi.org/10.1063/1.1744102>
-- **Allen, S. M. & Cahn, J. W.** (1979). <https://doi.org/10.1016/0001-6160(79)90196-2>
+- **Cahn, J. W. & Hilliard, J. E.** (1958). “Free energy of a nonuniform system. I. Interfacial free energy.” <https://doi.org/10.1063/1.1744102>
+- **Allen, S. M. & Cahn, J. W.** (1979). “A microscopic theory for antiphase boundary motion and its application to antiphase domain coarsening.” <https://doi.org/10.1016/0001-6160(79)90196-2>
 
 ## 数値計算スキーム
 
