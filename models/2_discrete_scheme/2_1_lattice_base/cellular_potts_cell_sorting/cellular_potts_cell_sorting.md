@@ -29,6 +29,13 @@ $$
 - PDF（同フォルダ）: `Graner and Glazier 1992 - Simulation of biological cell sorting using a two-dimensional extended Potts model.pdf`
 - **Mathematica**: [`CellularPottsSorting2D.generated.nb`](../../../../Mathematica/2_discrete_scheme/2_1_lattice_base/cellular_potts_cell_sorting/CellularPottsSorting2D.generated.nb)
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは純 Python の再実装であり、下記フレームワークのソースを転載したものではない。$J$ の数値は Graner & Glazier (1992) の論文値で、同じ論文を再現する公開デモとパラメータが一致する。
+
+- Artistoo *Back to the Classics: Cell Sorting*: <https://artistoo.net/explorables/Explorable-CellSorting.html>
+- CompuCell3D 細胞選別チュートリアル（XML/Python フロントエンド）: <https://compucell3d.org/>
+
 ## 数値計算スキーム
 
 - 純 Python CPM（CompuCell3D 不要）。

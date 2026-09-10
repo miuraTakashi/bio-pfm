@@ -23,7 +23,7 @@ $$
 
 - FitzHugh, R. (1961). Impulses and physiological states in theoretical models of nerve membrane. *Biophysical Journal*, 1(6), 445–466. <https://doi.org/10.1016/S0006-3495(61)86902-6>
 - Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). An active pulse transmission line simulating nerve axon. *Proceedings of the IRE*, 50(10), 2061–2070. <https://doi.org/10.1109/JRPROC.1962.288235>
-- 興奮性媒質の進行波: 総説的に Murray, J. D. (2002). *Mathematical Biology I: An Introduction* (3rd ed.). Springer. <https://doi.org/10.1007/b98868>
+- 興奮性媒質の進行波: 総説的に Murray, J. D. (2003). *Mathematical Biology II: Spatial Models and Biomedical Applications* (3rd ed.). Springer. <https://doi.org/10.1007/b98869>
 
 ## 数値計算スキーム
 

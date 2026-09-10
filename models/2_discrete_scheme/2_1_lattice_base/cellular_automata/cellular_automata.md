@@ -17,7 +17,14 @@
 ## 出典（原著・標準文献）
 
 - Wolfram, S. (1983). Statistical mechanics of cellular automata. *Reviews of Modern Physics*, 55(3), 601–644. <https://doi.org/10.1103/RevModPhys.55.601>
-- Wolfram, S. (2002). *A New Kind of Science*. Wolfram Media.
+- Wolfram, S. (2002). *A New Kind of Science*. Wolfram Media. <https://www.wolframscience.com/nks/>
+- **Mathematica（移植元）**: [`CellularAutomata.nb`](../../../../Mathematica/2_discrete_scheme/2_1_lattice_base/cellular_automata/CellularAutomata.nb)
+
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは上記 Mathematica ノートからの移植（ルール 0–255 を 16×16 に並べ、中央 1 セル初期化）であり、下記サイトのソースを転載したものではない。`np.roll` で左右近傍を取り、ルール番号の 8 bit で更新する型は教育用コードで頻出する。
+
+- Rossant, C. *IPython Cookbook*, 12.2 Simulating an elementary cellular automaton: <https://ipython-books.github.io/122-simulating-an-elementary-cellular-automaton/>
 
 ## 数値計算スキーム
 

@@ -18,6 +18,13 @@ $$
 
 - Lorenz, E. N. (1963). Deterministic nonperiodic flow. *Journal of the Atmospheric Sciences*, 20(2), 130–141. <https://doi.org/10.1175/1520-0469(1963)020%3C0130:DNF%3E2.0.CO;2>
 - 教科書的総説: Sparrow, C. (1982). *The Lorenz Equations: Bifurcations, Chaos, and Strange Attractors*. Springer.
+- **Mathematica（移植元）**: [`ChaosLorentzAttractor.nb`](../../../../Mathematica/0_ode/lorentz_attractor/ChaosLorentzAttractor.nb)
+
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは上記 Mathematica ノートのオイラー積分（`oneStep` + `NestList` 相当）の移植であり、下記サイトのソースを転載したものではない。$\sigma=10$, $\beta=8/3$ と陽的オイラーは教育用デモで標準だが、本実装の既定は $\rho=56$（`28.0 * 2`）で、古典デモの $\rho=28$ とは異なる。
+
+- Matplotlib ギャラリー *Lorenz Attractor*（$\sigma=10$, $\rho=28$, $\beta\approx 8/3$, 陽的オイラー）: <https://matplotlib.org/stable/gallery/mplot3d/lorenz_attractor.html>
 
 ## カオス（chaos）の要点
 

@@ -46,6 +46,17 @@ $$
 \mathbf{u}^{n+1} = \mathbf{u}^{*} - \frac{\Delta t}{\rho}\nabla p.
 $$
 
+## 出典（原著・標準文献）
+
+- Harlow, F. H., & Welch, J. E. (1965). Numerical calculation of time-dependent viscous incompressible flow of fluid with free surface. *Physics of Fluids*, 8(12), 2182–2189. <https://doi.org/10.1063/1.1761178>（MAC スタガード格子）
+- Chorin, A. J. (1968). Numerical solution of the Navier–Stokes equations. *Mathematics of Computation*, 22(104), 745–762. <https://doi.org/10.1090/S0025-5718-1968-0242392-2>（圧力投影）
+
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは障害物マスク付き MAC 格子の独自実装であり、下記のソースを転載したものではない。関数名 `pressure_poisson` と Jacobi 反復による圧力 Poisson は、教育用 2D Navier–Stokes コードで頻出するため明示する。
+
+- Barba, L. A., & Forsyth, G. F. (2018). CFD Python: the 12 steps to Navier–Stokes equations. *JOSE*, **1**, 21. <https://doi.org/10.21105/jose.00021> — 実装: <https://github.com/barbagroup/CFDPython>（Step 11/12 の `pressure_poisson`。本実装は lid-driven cavity ではなく、マスク付き定圧流路）
+
 ## 数値計算スキーム
 
 - **格子**: 128x128 セル中心圧力、速度はスタガード配置（`u`: x-face, `v`: y-face）。

@@ -45,6 +45,29 @@ def spacetime_diagram(rule: int, width: int = 64, generations: int = 64) -> np.n
     return np.array(diagram)
 
 
+def save_rule_gallery(
+    rules: tuple[int, ...] = (30, 90, 110, 184, 150, 22, 54, 60, 73, 105),
+    *,
+    width: int = 128,
+    generations: int = 128,
+) -> list[Path]:
+    """Save individual space–time PNGs for selected elementary CA rules."""
+    out_dir = Path(__file__).resolve().parent / "results"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    paths: list[Path] = []
+    for rule in rules:
+        diagram = spacetime_diagram(int(rule), width=width, generations=generations)
+        fig, ax = plt.subplots(figsize=(4, 4), dpi=128)
+        ap.atlas_imshow(ax, diagram, interpolation="nearest", aspect="equal")
+        ax.axis("off")
+        path = out_dir / f"cellular_automata_rule_{rule}.png"
+        fig.savefig(path, dpi=128, bbox_inches="tight", pad_inches=0.02)
+        plt.close(fig)
+        paths.append(path)
+        print(f"Saved {path}")
+    return paths
+
+
 def main():
     n_rules = 256
     cols = 16
@@ -64,9 +87,11 @@ def main():
 
     plt.tight_layout()
     out = (Path(__file__).resolve().parent / "results" / "cellular_automata.png")
+    out.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out, dpi=100)
     plt.close()
     print(f"Saved {out}")
+    save_rule_gallery()
 
 
 if __name__ == "__main__":

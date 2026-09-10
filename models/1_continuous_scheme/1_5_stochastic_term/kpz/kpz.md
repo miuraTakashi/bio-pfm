@@ -27,6 +27,12 @@ $$
 - Kardar, M., Parisi, G., & Zhang, Y.-C. (1986). Dynamic scaling of growing interfaces. *Physical Review Letters*, 56(9), 889–892. <https://doi.org/10.1103/PhysRevLett.56.889>
 - **Mathematica**: [`KPZのコピー.nb`](../../../../Mathematica/1_continuous_scheme/1_5_stochastic_term/kpz/KPZのコピー.nb)（リポジトリ上のファイル名に従う）
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは上記 Mathematica ノートからの移植であり、下記ライブラリのソースを転載したものではない。1+1D KPZ の差分＋加法ノイズという構成は公開ソルバと近い。
+
+- Zwicker, D. *py-pde* `KPZInterfacePDE`: <https://py-pde.readthedocs.io/en/latest/packages/pde.pdes.kpz_interface.html>
+
 ## 数値計算スキーム
 
 [`kpz.py`](kpz.py) を参照（空間差分＋Euler–Maruyama 等）。

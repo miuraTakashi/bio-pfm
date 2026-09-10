@@ -59,8 +59,6 @@ $$
 
 - **de Gennes, P. G. & Prost, J.** *The Physics of Liquid Crystals*（2nd ed., Oxford University Press, 1993）. <https://doi.org/10.1093/oso/9780198520245.001.0001>
   ネマティックの秩序変数、弾性（Frank）、揺らぎの章で、ディレクター表示とテンソル表示の物理的背景が整理されている。
-- **Mottram, N. J. & Newton, C. J. P.** “Introduction to Q-tensor theory.” *arXiv*:1409.3542 (2014). <https://doi.org/10.48550/arXiv.1409.3542>  
-  2D/3D の $Q$ テンソル定式化、境界条件、Landau–de Gennes エネルギーと平衡・欠陥の数学的枠組みへの入門として、本デモの記号と直結しやすい。
 - **Virga, E. G.** *Variational Theories for Liquid Crystals*（Chapman & Hall, 1994）.  
   連続体理論の変分構造（弾性＋体積）を厳密に扱う文献。
 

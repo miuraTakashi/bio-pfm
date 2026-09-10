@@ -38,6 +38,12 @@ $$
 - Swift & Hohenberg (1977). Hydrodynamic fluctuations at the convective instability. *Phys. Rev. A*, 15(1), 319–328. <https://doi.org/10.1103/PhysRevA.15.319>
 - **Mathematica**: [`1.1.2.SHH2D.nb`](../../../../Mathematica/1_continuous_scheme/1_3_biharmonic_term/swift_hohenberg_2d/1.1.2.SHH2D.nb)
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは上記 Mathematica ノートからの移植であり、下記のソースを転載したものではない。線形項 $\varepsilon-(1-k^2)^2$ を陰的にするスペクトル半陰式は公開実装と式が近い。
+
+- `swifthohenberg.py`（FFT 半陰式の一例）: <https://git.chaospott.de/pixel/pixelserver2/src/commit/5b2f7e4b5efdc27cb465e7fbfc84a97e360b0809/apps/swifthohenberg.py>
+
 ## 数値計算スキーム
 
 [`swift_hohenberg_2d.py`](swift_hohenberg_2d.py) を参照。

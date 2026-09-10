@@ -49,7 +49,7 @@ $$
 
 - Fisher, R. A. (1937). The wave of advance of advantageous genes. *Annals of Eugenics*, 7(4), 355–369. <https://doi.org/10.1111/j.1469-1809.1937.tb02153.x>
 - Kolmogorov, A. N., Petrovskii, I. G., & Piskunov, N. S. (1937). A study of the diffusion equation with increase in the amount of substance, and its application to a biological problem. *Bulletin of Moscow University, Mathematics and Mechanics*, 1(6), 1–26. Reprinted in *Selected Works of A. N. Kolmogorov*, Vol. 1, 242–270 (1991). <https://doi.org/10.1007/978-94-011-3030-1_38>
-- 進行波の教科書的整理: Murray, J. D. (2002). *Mathematical Biology I: An Introduction* (3rd ed.). Springer. <https://doi.org/10.1007/b98868>
+- 進行波の教科書的整理: Murray, J. D. (2003). *Mathematical Biology II: Spatial Models and Biomedical Applications* (3rd ed.). Springer. <https://doi.org/10.1007/b98869>
 
 ## 数値計算スキーム
 

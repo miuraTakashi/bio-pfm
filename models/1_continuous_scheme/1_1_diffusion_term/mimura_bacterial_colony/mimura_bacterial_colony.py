@@ -1,26 +1,28 @@
 """
-Matsushita et al. (1997) unified bacterial colony model — Fig. 5 morphologies.
+Mimura–Sakaguchi–Matsushita (2000) bacterial colony RD model.
 
-Reference: Physica A 249 (1998) 517–524; Eqs. (1)–(5), non-dimensional form.
+Reference: Physica A 282 (2000) 283–303; Eqs. (2.5)–(2.8), (3.1)–(3.4), (4.1)–(4.2).
 
-  ∂b/∂t = ∇·(D(b,n)∇b) + g(n)b − a(b,n)b
-  ∂s/∂t = a(b,n)b
-  ∂n/∂t = ∇²n − g(n)b,   g(n) = n
+  ∂u/∂t = ∇·(d(b) ∇u) + u v − a(u,v) u
+  ∂v/∂t = ∇² v − u v
+  ∂w/∂t = a(u,v) u
 
-Active density b and nutrient n are advanced with a semi-implicit FFT scheme
-(same pattern as `turing_2d.py`: reaction explicit, diffusion implicit on a
-periodic grid). A fixed exterior buffer enforces n = n₀ and b = s = 0 there,
-approximating growth on an infinite nutrient bath (periodic FFT alone depletes
-nutrient globally). Inactive cells s are integrated explicitly; Fig. 5 shows b+s.
+  a(u,v) = 1 / ((1 + u/a₁)(1 + v/a₂)),   a₁ = 1/2400, a₂ = 1/120
+  b = u + w
 
-Fig. 5b uses density-dependent motility D = d·b (Eden-like). With
-∇·(d b ∇b) = d b ∇²b + d|∇b|², the Laplacian term is advanced semi-implicitly
-(FFT, coefficient d·bⁿ frozen per step) and d|∇bⁿ|² is treated explicitly.
+Section 3 (1D, soft agar Eq. 3.1 / hard agar Eq. 3.4): Fig. 3.2 travelling /
+oscillatory / clustering pulses; Fig. 3.4 nonlinear travelling front.
+
+Section 4 (2D): soft agar (4.1) d(b)=d; hard agar (4.2) d(b)=d·b.
+Discretisation: Neumann FD (isotropic 9-point fluxes), forward Euler, large
+domain. In 2D a frozen spatial mobility χ(x) breaks rotational symmetry on
+structured grids.
+
+Initial data: droplet inoculum in u, uniform v ≡ v₀, w ≡ 0.
 """
 from __future__ import annotations
 
 import os
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -28,258 +30,547 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
-for _d in Path(__file__).resolve().parents:
-    if (_d / "atlas_plotting.py").is_file():
-        if str(_d) not in sys.path:
-            sys.path.insert(0, str(_d))
-        break
-else:
-    raise ImportError("atlas_plotting.py not found above " + str(__file__))
+# Paper Fig. 3.1 / Sec. 4.1: a₁ = 1/2400, a₂ = 1/120 in Eq. (2.6).
+A1 = 1.0 / 2400.0
+A2 = 1.0 / 120.0
 
 
 @dataclass(frozen=True)
-class Fig5Case:
-    """One panel of Fig. 5 (paper caption parameters)."""
+class Section3Case:
+    """One panel of Mimura et al. (2000) Fig. 3.2 / 3.4 (1D)."""
 
     label: str
     title: str
-    n0: float
+    v0: float
     d: float
-    eden_diffusion: bool = False
+    nonlinear: bool = False
     t_final: float = 2000.0
-    dt: float = 0.03
-    a0: float = 0.4
-    a1: float = 2.0
-    a2: float = 0.55
-    seed: int = 1
-    d_floor: float = 0.2
-    b_peak: float = 0.9
+    dt: float = 0.05
+    u0: float = 1.0
+    r0: float = 3.0
 
     @staticmethod
-    def default_fig5_cases() -> tuple["Fig5Case", ...]:
-        """Paper Fig. 5 caption: (n0, d); panel (b) uses d = 0.05·b (Physica A 249, p.523)."""
+    def default_fig32_cases() -> tuple["Section3Case", ...]:
+        """Fig. 3.2 caption parameters (soft agar, Eq. 3.1)."""
         return (
-            Fig5Case("a", "DLA-like", 0.98, 0.05, t_final=5500.0, a0=0.28, a1=1.4, a2=0.4, seed=11),
-            Fig5Case(
-                "b",
-                "Eden-like",
-                1.2,
-                0.05,
-                eden_diffusion=True,
-                t_final=1400.0,
-                a0=0.46,
-                a1=2.2,
-                a2=0.65,
-                d_floor=0.12,
-                seed=12,
-            ),
-            Fig5Case(
-                "c", "concentric ring-like", 1.2, 0.05, t_final=3600.0, a0=0.40, a1=3.8, a2=0.85, seed=13
-            ),
-            Fig5Case("d", "disk-like", 1.5, 0.12, t_final=320.0, a0=0.44, a1=2.5, a2=0.45, seed=14),
-            Fig5Case("e", "DBM-like", 0.855, 0.12, t_final=5000.0, a0=0.27, a1=1.8, a2=0.35, seed=15),
+            Section3Case("a", "travelling wave", v0=0.117, d=0.1, t_final=2500.0),
+            Section3Case("b", "oscillatory (mild)", v0=0.129, d=0.05, t_final=3500.0),
+            Section3Case("c", "oscillatory (strong)", v0=0.108, d=0.05, t_final=4500.0, u0=0.8),
+            # Fig. 3.2(d): pulse is a long transient then extinguishes → stationary cluster.
+            Section3Case("d", "clustering", v0=0.0875, d=0.1, t_final=9000.0, u0=1.0, r0=3.0),
+        )
+
+    @staticmethod
+    def fig34_case() -> "Section3Case":
+        """Fig. 3.4: hard-agar travelling front (Eq. 3.4)."""
+        return Section3Case(
+            "3.4",
+            "nonlinear travelling",
+            v0=0.25,
+            d=0.05,
+            nonlinear=True,
+            t_final=5000.0,
+            u0=1.0,
+            r0=4.0,
         )
 
 
-def build_implicit_kernel_2d(grid_size: int, dt: float, d_coeff: float, dx: float) -> np.ndarray:
-    """(I − dt D ∇²)⁻¹ on a periodic 2D grid (5-point Laplacian), as in turing_2d."""
-    kernel = np.zeros((grid_size, grid_size), dtype=np.float64)
-    c = dt * d_coeff / (dx * dx)
-    kernel[0, 0] = 1.0 + 4.0 * c
-    kernel[1, 0] = -c
-    kernel[-1, 0] = -c
-    kernel[0, 1] = -c
-    kernel[0, -1] = -c
-    return 1.0 / np.fft.fft2(kernel)
+@dataclass(frozen=True)
+class ColonyCase:
+    """One morphology from Mimura et al. (2000) Section 4."""
+
+    label: str
+    title: str
+    v0: float
+    d: float
+    nonlinear: bool = False
+    t_final: float = 3000.0
+    dt: float = 0.1
+    u0: float = 1.06
+    r0: float = 4.0
+    chi0: float = 0.06
+    seed: int = 1
+    # Optional overrides (rings need finer Δx than branching cases).
+    dx: float | None = None
+    L: float | None = None
+    enhance_rings: bool = False
+
+    @staticmethod
+    def default_section4_cases() -> tuple["ColonyCase", ...]:
+        """(d, v₀) from Figs. 4.1–4.9; (B) uses nonlinear diffusion (4.2)."""
+        return (
+            ColonyCase(
+                "A",
+                "DLA-like",
+                v0=0.087,
+                d=0.05,
+                t_final=4500.0,
+                chi0=0.08,
+                seed=11,
+            ),
+            ColonyCase(
+                "B",
+                "Eden-like",
+                v0=0.25,
+                d=0.05,
+                nonlinear=True,
+                t_final=4000.0,
+                chi0=0.05,
+                seed=12,
+            ),
+            # Fig. 4.6 caption is d=0.05, v0=0.1, but that sits at the O/branching
+            # edge on square FD grids (often flower/DLA-like). Concentric bands
+            # require the mild 1D oscillatory band (Fig. 3.2b / A-ii): v0≈0.12–0.13,
+            # finer Δx to resolve the radial wave-train, and small χ.
+            ColonyCase(
+                "C",
+                "concentric ring-like",
+                v0=0.125,
+                d=0.05,
+                t_final=8000.0,
+                dt=0.05,
+                chi0=0.01,
+                seed=13,
+                dx=1.0,
+                L=480.0,
+                enhance_rings=True,
+            ),
+            ColonyCase(
+                "D",
+                "disk-like",
+                v0=0.25,
+                d=0.25,
+                t_final=900.0,
+                chi0=0.02,
+                seed=14,
+            ),
+            ColonyCase(
+                "E",
+                "DBM-like",
+                v0=0.071,
+                d=0.12,
+                t_final=3200.0,
+                chi0=0.08,
+                seed=15,
+            ),
+        )
 
 
-def diffuse_semi_implicit_2d(rhs: np.ndarray, kernel: np.ndarray) -> np.ndarray:
-    """One semi-implicit diffusion step: (I − dt D ∇²)⁻¹ rhs (periodic FFT)."""
-    return np.real(np.fft.ifft2(kernel * np.fft.fft2(rhs)))
+def conversion_rate(u: np.ndarray, v: np.ndarray, *, a1: float = A1, a2: float = A2) -> np.ndarray:
+    """Eq. (2.6): a(u,v) = 1 / ((1 + u/a₁)(1 + v/a₂))."""
+    return 1.0 / ((1.0 + u / a1) * (1.0 + v / a2))
 
 
-def eden_grad_squared_term(b: np.ndarray, d: float, dx: float) -> np.ndarray:
-    """Explicit d|∇b|² from ∇·(d b ∇b) = d b ∇²b + d|∇b|²."""
-    bx = (np.roll(b, -1, 1) - np.roll(b, 1, 1)) / (2.0 * dx)
-    by = (np.roll(b, -1, 0) - np.roll(b, 1, 0)) / (2.0 * dx)
-    return d * (bx * bx + by * by)
+def laplacian_1d_neumann(field: np.ndarray, dx: float) -> np.ndarray:
+    """Second derivative with Neumann BC at both ends."""
+    out = np.empty_like(field)
+    out[1:-1] = field[2:] + field[:-2] - 2.0 * field[1:-1]
+    out[0] = 2.0 * (field[1] - field[0])
+    out[-1] = 2.0 * (field[-2] - field[-1])
+    return out / (dx * dx)
 
 
-def eden_diffusion_coefficient(case: Fig5Case, b: np.ndarray, pad: int) -> float:
-    """
-    Effective D for semi-implicit FFT step when D = d·b (frozen at bⁿ).
-
-    Uses the mean of d·max(b, d_floor) over the active colony interior.
-    """
-    core = np.maximum(b[pad:-pad, pad:-pad], case.d_floor)
-    active = core > case.d_floor
-    if np.any(active):
-        return case.d * float(np.mean(core[active]))
-    return case.d * case.d_floor
+def div_b_grad_u_1d(b: np.ndarray, u: np.ndarray, dx: float) -> np.ndarray:
+    """(b u_x)_x with Neumann reflection (Eq. 3.4)."""
+    bp = np.pad(b, 1, mode="edge")
+    up = np.pad(u, 1, mode="edge")
+    b_r = 0.5 * (bp[1:-1] + bp[2:])
+    b_l = 0.5 * (bp[1:-1] + bp[:-2])
+    return (b_r * (up[2:] - up[1:-1]) - b_l * (up[1:-1] - up[:-2])) / (dx * dx)
 
 
-def deactivation_rate(
-    b: np.ndarray,
-    n: np.ndarray,
+def simulate_section3_case(
+    case: Section3Case,
     *,
-    a0: float,
-    a1: float,
-    a2: float,
-    n_ref: float,
-) -> np.ndarray:
+    L: float = 400.0,
+    dx: float = 0.5,
+    quick_scale: float = 1.0,
+    n_records: int = 240,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
-    a(b, n) decreasing in b and n (Physica A 282, 2000: a0/((1+a1 b)(1+a2 n)) form).
+    Integrate 1D Eq. (3.1) or (3.4) on [0, L] (semi-infinite approximation).
 
-    a = a0 / ((1 + a1 b) (1 + a2 max(0, 1 − n/n_ref)))
+    Returns x, t_samples, U[nt,nx], B[nt,nx], and final (u, v, w).
     """
-    factor_b = 1.0 + a1 * np.clip(b, 0.0, None)
-    factor_n = 1.0 + a2 * np.clip(1.0 - n / n_ref, 0.0, 1.0)
-    return a0 / (factor_b * factor_n)
+    n = int(round(L / dx)) + 1
+    x = np.linspace(0.0, L, n)
+    t_final = case.t_final * quick_scale
+    dt = min(case.dt, 0.4 * (dx * dx) / 4.0)
+    n_steps = max(1, int(round(t_final / dt)))
+    stride = max(1, n_steps // max(n_records - 1, 1))
+
+    u = np.where(x <= case.r0, case.u0, 0.0).astype(np.float64)
+    v = np.full(n, case.v0, dtype=np.float64)
+    w = np.zeros(n, dtype=np.float64)
+
+    U = np.zeros((n_records, n), dtype=np.float64)
+    B = np.zeros((n_records, n), dtype=np.float64)
+    t_samples = np.zeros(n_records, dtype=np.float64)
+    rec = 0
+    t_now = 0.0
+
+    for step in range(n_steps):
+        a = conversion_rate(u, v)
+        growth = u * v
+        if case.nonlinear:
+            b = u + w
+            diff_u = case.d * div_b_grad_u_1d(b, u, dx)
+        else:
+            diff_u = case.d * laplacian_1d_neumann(u, dx)
+        u = np.clip(u + dt * (diff_u + growth - a * u), 0.0, None)
+        v = np.clip(v + dt * (laplacian_1d_neumann(v, dx) - growth), 0.0, None)
+        w = w + dt * (a * u)
+        t_now = (step + 1) * dt
+
+        if step % stride == 0 and rec < n_records:
+            t_samples[rec] = t_now
+            U[rec] = u
+            B[rec] = u + w
+            rec += 1
+            if float(u[-20:].max()) > 1e-4:
+                break
+
+    if rec == 0:
+        t_samples[0] = t_now if t_now > 0 else dt
+        U[0] = u
+        B[0] = u + w
+        rec = 1
+    elif t_samples[rec - 1] < t_now - 0.5 * dt and rec < n_records:
+        t_samples[rec] = t_now
+        U[rec] = u
+        B[rec] = u + w
+        rec += 1
+
+    return x, t_samples[:rec], U[:rec], B[:rec], u, v, w
 
 
-def exterior_buffer_pad(ngrid: int) -> int:
-    return max(12, ngrid // 12)
-
-
-def apply_exterior_buffer(
-    b: np.ndarray,
-    n: np.ndarray,
-    s: np.ndarray,
+def plot_spacetime(
+    ax: plt.Axes,
+    x: np.ndarray,
+    t: np.ndarray,
+    field: np.ndarray,
     *,
-    n0: float,
-    pad: int,
+    title: str,
+    cmap: str = "inferno",
 ) -> None:
-    """Fixed nutrient bath and zero cells in a rim (mitigates periodic wrap-around)."""
-    b[:pad, :] = b[-pad:, :] = b[:, :pad] = b[:, -pad:] = 0.0
-    s[:pad, :] = s[-pad:, :] = s[:, :pad] = s[:, -pad:] = 0.0
-    n[:pad, :] = n[-pad:, :] = n[:, :pad] = n[:, -pad:] = n0
+    """Space–time density plot (x horizontal, t vertical; paper Fig. 3.2 style)."""
+    extent = [float(x[0]), float(x[-1]), float(t[0]), float(t[-1])]
+    vmax = float(np.percentile(field, 99.5)) if field.size else 1.0
+    vmax = max(vmax, 1e-8)
+    ax.imshow(
+        field,
+        origin="lower",
+        aspect="auto",
+        extent=extent,
+        cmap=cmap,
+        vmin=0.0,
+        vmax=vmax,
+        interpolation="nearest",
+    )
+    ax.set_title(title, fontsize=8)
+    ax.set_xlabel(r"$x$")
+    ax.set_ylabel(r"$t$")
+
+
+def run_section3(
+    cases: tuple[Section3Case, ...] | None = None,
+    *,
+    L: float | None = None,
+    dx: float = 0.5,
+    out_png: Path | None = None,
+    include_fig34: bool = True,
+) -> Path:
+    """Reproduce Fig. 3.2 (and optionally Fig. 3.4) as space–time panels."""
+    cases = cases or Section3Case.default_fig32_cases()
+    quick = os.environ.get("MIMURA_QUICK", "").strip().lower() in {"1", "true", "yes"}
+    L = L or (300.0 if quick else 500.0)
+    qscale = 0.45 if quick else 1.0
+    n_records = 160 if quick else 320
+
+    n_cols = len(cases)
+    fig, axes = plt.subplots(
+        2,
+        n_cols,
+        figsize=(2.8 * n_cols, 5.6),
+        constrained_layout=True,
+        sharex=False,
+        sharey=False,
+    )
+    if n_cols == 1:
+        axes = np.array([[axes[0]], [axes[1]]])
+
+    out_dir = Path(__file__).resolve().parent / "results"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    for col, case in enumerate(cases):
+        print(f"Section 3 ({case.label}) {case.title} ...", flush=True)
+        x, t, U, B, _, _, _ = simulate_section3_case(
+            case, L=L, dx=dx, quick_scale=qscale, n_records=n_records
+        )
+        plot_spacetime(
+            axes[0, col],
+            x,
+            t,
+            U,
+            title=f"({case.label}) $u$ — {case.title}\n$d$={case.d}, $v_0$={case.v0}",
+        )
+        plot_spacetime(
+            axes[1, col],
+            x,
+            t,
+            B,
+            title=f"({case.label}) $b=u+w$",
+            cmap="gray_r",
+        )
+
+    fig.suptitle(
+        "Mimura et al. (2000) — Section 3 / Fig. 3.2 (1D soft agar, Eq. 3.1)\n"
+        r"$a_1=1/2400$, $a_2=1/120$; Neumann FD on $[0,L]$",
+        fontsize=10,
+    )
+    out_png = out_png or out_dir / "mimura_bacterial_colony_section3_fig32.png"
+    fig.savefig(out_png, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved {out_png}")
+
+    if include_fig34:
+        case34 = Section3Case.fig34_case()
+        print(f"Section 3 Fig. 3.4 {case34.title} ...", flush=True)
+        x, t, U, _, u, v, w = simulate_section3_case(
+            case34, L=L, dx=dx, quick_scale=qscale, n_records=n_records
+        )
+        fig2, axes2 = plt.subplots(1, 2, figsize=(10.0, 3.6), constrained_layout=True)
+        plot_spacetime(
+            axes2[0],
+            x,
+            t,
+            U,
+            title=r"Fig. 3.4 spacetime $u$ ($d=0.05\,b$, $v_0=0.25$)",
+        )
+        axes2[1].plot(x, u, label=r"$u$", lw=1.5)
+        axes2[1].plot(x, v, label=r"$v$", lw=1.5)
+        axes2[1].plot(x, u + w, label=r"$b=u+w$", lw=1.5)
+        axes2[1].set_xlabel(r"$x$")
+        axes2[1].set_title(rf"late profiles  $t={t[-1]:.0f}$")
+        axes2[1].legend(fontsize=8)
+        # Zoom to the colony front (nonlinear front advances slowly).
+        front = float(np.max(x[(u + w) > 1e-4])) if np.any(u + w > 1e-4) else float(x[-1])
+        axes2[1].set_xlim(0.0, min(float(x[-1]), max(60.0, 1.4 * front)))
+        # Also crop spacetime display width via a secondary xlim on the image axes
+        axes2[0].set_xlim(0.0, min(float(x[-1]), max(80.0, 2.0 * front)))
+        fig2.suptitle(
+            "Mimura et al. (2000) — Section 3 / Fig. 3.4 (1D hard agar, Eq. 3.4)",
+            fontsize=10,
+        )
+        out34 = out_dir / "mimura_bacterial_colony_section3_fig34.png"
+        fig2.savefig(out34, dpi=150, bbox_inches="tight")
+        plt.close(fig2)
+        print(f"Saved {out34}")
+
+    return out_png
+
+
+def laplacian_neumann(field: np.ndarray, dx: float) -> np.ndarray:
+    """
+    Isotropic-leaning 9-point Laplacian with Neumann BC via edge padding.
+
+    Mehrstellen stencil (1/(6 Δx²))·[[1,4,1],[4,-20,4],[1,4,1]] — equivalently
+    (2/3)·Δ_5 + (1/6)·Δ_diag. Reduces the strong axis-aligned cross of pure
+    5-point on degenerate fronts (Eden-like Eq. 4.2).
+    """
+    p = np.pad(field, 1, mode="edge")
+    card = p[:-2, 1:-1] + p[2:, 1:-1] + p[1:-1, :-2] + p[1:-1, 2:]
+    diag = p[:-2, :-2] + p[:-2, 2:] + p[2:, :-2] + p[2:, 2:]
+    return (4.0 * card + diag - 20.0 * field) / (6.0 * dx * dx)
+
+
+def div_b_grad_phi_neumann(b: np.ndarray, phi: np.ndarray, dx: float) -> np.ndarray:
+    """
+    ∇·(b ∇φ) with Neumann reflection, isotropic-leaning 9-point FV fluxes.
+
+    Cardinal faces (weight 2/3) plus diagonal faces (weight 1/6). When b ≡ const
+    this recovers laplacian_neumann (Mehrstellen).
+    """
+    bp = np.pad(b, 1, mode="edge")
+    pp = np.pad(phi, 1, mode="edge")
+    inv_dx2 = 1.0 / (dx * dx)
+    b_c = bp[1:-1, 1:-1]
+    p_c = pp[1:-1, 1:-1]
+    b_e = 0.5 * (b_c + bp[1:-1, 2:])
+    b_w = 0.5 * (b_c + bp[1:-1, :-2])
+    b_n = 0.5 * (b_c + bp[2:, 1:-1])
+    b_s = 0.5 * (b_c + bp[:-2, 1:-1])
+    div_card = inv_dx2 * (
+        b_e * (pp[1:-1, 2:] - p_c)
+        + b_w * (pp[1:-1, :-2] - p_c)
+        + b_n * (pp[2:, 1:-1] - p_c)
+        + b_s * (pp[:-2, 1:-1] - p_c)
+    )
+    b_ne = 0.5 * (b_c + bp[2:, 2:])
+    b_nw = 0.5 * (b_c + bp[2:, :-2])
+    b_se = 0.5 * (b_c + bp[:-2, 2:])
+    b_sw = 0.5 * (b_c + bp[:-2, :-2])
+    div_diag = inv_dx2 * (
+        b_ne * (pp[2:, 2:] - p_c)
+        + b_nw * (pp[2:, :-2] - p_c)
+        + b_se * (pp[:-2, 2:] - p_c)
+        + b_sw * (pp[:-2, :-2] - p_c)
+    )
+    return (2.0 / 3.0) * div_card + (1.0 / 6.0) * div_diag
+
+
+def colony_radius(total: np.ndarray, dx: float, *, frac: float = 0.02) -> float:
+    peak = float(total.max())
+    if peak <= 0.0:
+        return 0.0
+    mask = total > frac * peak
+    if not np.any(mask):
+        return 0.0
+    ys, xs = np.nonzero(mask)
+    cy = (total.shape[0] - 1) / 2.0
+    cx = (total.shape[1] - 1) / 2.0
+    return float(dx * np.sqrt(np.max((ys - cy) ** 2 + (xs - cx) ** 2)))
 
 
 def initial_fields(
-    n0: float,
+    v0: float,
     ngrid: int,
+    L: float,
     *,
-    b_peak: float,
+    u0: float,
+    r0: float,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """
-    Paper Eq. (5): point-like inoculum b₀(r̃), uniform nutrient n₀, s = 0.
-    """
-    b = np.zeros((ngrid, ngrid), dtype=np.float64)
-    b[ngrid // 2, ngrid // 2] = b_peak
-    n = np.full((ngrid, ngrid), n0, dtype=np.float64)
-    s = np.zeros_like(b)
-    return b, n, s
+    """Eq. (2.7): central disk droplet, uniform nutrient, w ≡ 0."""
+    x = np.linspace(-0.5 * L, 0.5 * L, ngrid)
+    xx, yy = np.meshgrid(x, x, indexing="xy")
+    u = np.where(xx * xx + yy * yy <= r0 * r0, u0, 0.0).astype(np.float64)
+    v = np.full((ngrid, ngrid), v0, dtype=np.float64)
+    w = np.zeros_like(u)
+    return u, v, w
 
 
-def _interface_noise(b: np.ndarray, rng: np.random.Generator, dt: float, amp: float) -> np.ndarray:
-    """Isotropic perturbation on the growing front (avoids grid-aligned artefacts)."""
-    active = b > 0.04 * float(b.max())
-    if not np.any(active):
-        return b
-    noise = rng.standard_normal(b.shape)
-    lap = (
-        np.roll(b, 1, 0) + np.roll(b, -1, 0) + np.roll(b, 1, 1) + np.roll(b, -1, 1) - 4.0 * b
-    )
-    front = active & (np.abs(lap) > 0.02 * float(b.max()))
-    return b + dt * amp * noise * front.astype(np.float64)
+def make_chi(ngrid: int, chi0: float, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray]:
+    """Frozen spatial factors χ_u, χ_v ∈ [1−χ₀, 1+χ₀] for symmetry breaking."""
+    if chi0 <= 0.0:
+        ones = np.ones((ngrid, ngrid), dtype=np.float64)
+        return ones, ones.copy()
+    chi_u = 1.0 + chi0 * (2.0 * rng.random((ngrid, ngrid)) - 1.0)
+    chi_v = 1.0 + chi0 * (2.0 * rng.random((ngrid, ngrid)) - 1.0)
+    return chi_u, chi_v
 
 
-def simulate_fig5_case(
-    case: Fig5Case,
+def simulate_case(
+    case: ColonyCase,
     *,
-    ngrid: int = 200,
-    dx: float = 1.0,
+    L: float = 480.0,
+    dx: float = 2.0,
     quick_scale: float = 1.0,
     n_frames: int = 0,
+    stop_radius_frac: float = 0.46,
 ) -> np.ndarray | tuple[np.ndarray, list[tuple[float, np.ndarray]]]:
     """
-    Integrate (1)–(3) and return total cell density b + s.
+    Integrate (4.1) or (4.2); return total density b = u + w.
 
-    If n_frames > 0, also return [(t, total), ...] snapshots along the trajectory.
+    Stops early when the colony approaches the plate edge.
     """
+    ngrid = int(round(L / dx)) + 1
     t_final = case.t_final * quick_scale
-    dt = case.dt
+    # 9-point Mehrstellen spectral radius is 16/(3 Δx²) (vs 4/Δx² for 5-point).
+    dt = min(case.dt, 0.45 * (dx * dx) / (16.0 / 3.0))
     n_steps = max(1, int(round(t_final / dt)))
-    pad = exterior_buffer_pad(ngrid)
     save_stride = max(1, n_steps // max(n_frames - 1, 1)) if n_frames > 0 else 0
+    max_radius = stop_radius_frac * L
 
-    b, n, s = initial_fields(case.n0, ngrid, b_peak=case.b_peak)
-    apply_exterior_buffer(b, n, s, n0=case.n0, pad=pad)
+    rng = np.random.default_rng(case.seed)
+    u, v, w = initial_fields(case.v0, ngrid, L, u0=case.u0, r0=case.r0)
+    chi_u, chi_v = make_chi(ngrid, case.chi0, rng)
 
-    kb_const: np.ndarray | None = None
-    if not case.eden_diffusion:
-        kb_const = build_implicit_kernel_2d(ngrid, dt, case.d, dx)
-    kn = build_implicit_kernel_2d(ngrid, dt, 1.0, dx)
-
-    b_max = 12.0
-    s_max = 12.0
-    rng = np.random.default_rng(case.seed + 1000)
     history: list[tuple[float, np.ndarray]] = []
-    branch_noise = case.label in {"a", "e"}
+    t_now = 0.0
 
     for step in range(n_steps):
-        a = deactivation_rate(b, n, a0=case.a0, a1=case.a1, a2=case.a2, n_ref=case.n0)
-        growth = n * b
-        reaction_b = growth - a * b
-        if case.eden_diffusion:
-            reaction_b = reaction_b + eden_grad_squared_term(b, case.d, dx)
-            kb = build_implicit_kernel_2d(
-                ngrid, dt, eden_diffusion_coefficient(case, b, pad), dx
-            )
+        a = conversion_rate(u, v)
+        growth = u * v
+        # Symmetry breaking: replace ∇φ by ∇(χ φ) as in Tomek–Šembera tests of MSM.
+        if case.nonlinear:
+            b = u + w
+            diff_u = case.d * div_b_grad_phi_neumann(b, chi_u * u, dx)
         else:
-            kb = kb_const
-        fb = b + dt * reaction_b
-        b = np.clip(diffuse_semi_implicit_2d(fb, kb), 0.0, b_max)
+            diff_u = case.d * laplacian_neumann(chi_u * u, dx)
+        diff_v = laplacian_neumann(chi_v * v, dx)
 
-        fn = n + dt * (-growth)
-        n = diffuse_semi_implicit_2d(fn, kn)
-        s = s + dt * a * b
-
-        n = np.clip(n, 0.0, None)
-        s = np.clip(s, 0.0, s_max)
-        apply_exterior_buffer(b, n, s, n0=case.n0, pad=pad)
-        if branch_noise:
-            b = np.clip(_interface_noise(b, rng, dt, amp=0.35), 0.0, b_max)
+        u = np.clip(u + dt * (diff_u + growth - a * u), 0.0, None)
+        v = np.clip(v + dt * (diff_v - growth), 0.0, None)
+        w = w + dt * (a * u)
+        t_now = (step + 1) * dt
 
         if n_frames > 0 and (step % save_stride == 0 or step == n_steps - 1):
-            history.append((step * dt, (b + s).copy()))
+            history.append((t_now, (u + w).copy()))
 
-    total = b + s
+        if step % 40 == 0 and colony_radius(u + w, dx) >= max_radius:
+            if n_frames > 0 and (not history or history[-1][0] < t_now):
+                history.append((t_now, (u + w).copy()))
+            break
+
+    total = u + w
     if n_frames > 0:
         return total, history
     return total
 
 
-def crop_interior(field: np.ndarray, pad: int) -> np.ndarray:
-    if pad <= 0:
-        return field
-    return field[pad:-pad, pad:-pad]
+def display_density(
+    total: np.ndarray,
+    *,
+    floor_frac: float = 0.015,
+    enhance_rings: bool = False,
+) -> np.ndarray:
+    """
+    Visual map of total density b.
 
-
-def display_density(total: np.ndarray, pad: int, *, rim: int = 5) -> np.ndarray:
-    """Log-compressed interior field for visualization (paper: bright colony on dark)."""
-    inner = crop_interior(total, pad).copy()
-    inner[:rim, :] = inner[-rim:, :] = inner[:, :rim] = inner[:, -rim:] = 0.0
-    peak = float(inner.max())
+    Ring contrast is weak on a filled plateau; enhance_rings subtracts a radial
+    moving average so concentric bands stand out (still grounded in b).
+    """
+    field = np.asarray(total, dtype=np.float64).copy()
+    peak = float(field.max())
     if peak > 0.0:
-        inner = np.where(inner > 0.03 * peak, inner, 0.0)
-    return np.log1p(np.clip(inner, 0.0, None))
+        field = np.where(field > floor_frac * peak, field, 0.0)
+    if enhance_rings and peak > 0.0:
+        n = field.shape[0]
+        cy = cx = (n - 1) / 2.0
+        yy, xx = np.ogrid[:n, :n]
+        r = np.sqrt((yy - cy) ** 2 + (xx - cx) ** 2)
+        r_int = np.clip(np.rint(r).astype(np.int64), 0, n - 1)
+        # Radial mean profile, then broadcast back.
+        counts = np.bincount(r_int.ravel(), minlength=n)
+        sums = np.bincount(r_int.ravel(), weights=field.ravel(), minlength=n)
+        radial_mean = np.zeros(n, dtype=np.float64)
+        nz = counts > 0
+        radial_mean[nz] = sums[nz] / counts[nz]
+        # Smooth the radial mean slightly.
+        ker = np.array([1.0, 2.0, 3.0, 2.0, 1.0], dtype=np.float64)
+        ker /= ker.sum()
+        pad = np.pad(radial_mean, 2, mode="edge")
+        radial_smooth = np.convolve(pad, ker, mode="valid")
+        baseline = radial_smooth[r_int]
+        contrast = field - baseline
+        # Keep only positive ring excess + a faint baseline so the colony envelope remains.
+        field = np.clip(contrast, 0.0, None) + 0.15 * field
+    return np.log1p(np.clip(field, 0.0, None))
 
 
-def density_vmax(field: np.ndarray, percentile: float = 99.2) -> float:
+def density_vmax(field: np.ndarray, percentile: float = 99.4) -> float:
     positive = field[field > 0.0]
     if positive.size == 0:
         return 1.0
     return max(float(np.percentile(positive, percentile)), 1e-6)
 
 
-def plot_fig5_panel(ax: plt.Axes, total: np.ndarray, case: Fig5Case, *, pad: int) -> None:
-    """Paper Fig. 5 style: bright colony (b+s) on dark background."""
-    field = display_density(total, pad)
+def plot_panel(ax: plt.Axes, total: np.ndarray, case: ColonyCase) -> None:
+    field = display_density(total, enhance_rings=case.enhance_rings)
     vmax = density_vmax(field)
     ax.imshow(np.clip(field / vmax, 0.0, 1.0), cmap="gray", origin="lower", vmin=0.0, vmax=1.0)
-    d_note = r"$0.05\,b$" if case.eden_diffusion else str(case.d)
-    ax.set_title(f"({case.label}) {case.title}\n$n_0$={case.n0}, $d$={d_note}", fontsize=8)
+    d_note = rf"${case.d}\,b$" if case.nonlinear else str(case.d)
+    ax.set_title(f"({case.label}) {case.title}\n$v_0$={case.v0}, $d$={d_note}", fontsize=8)
     ax.axis("off")
 
 
@@ -290,17 +581,16 @@ def _figure_to_image(fig: plt.Figure) -> Image.Image:
 
 
 def save_case_gif(
-    case: Fig5Case,
+    case: ColonyCase,
     history: list[tuple[float, np.ndarray]],
     *,
-    pad: int,
     out_path: Path,
     duration_ms: int = 90,
 ) -> Path:
-    """Write formation process GIF for one Fig. 5 panel."""
-    fields = [display_density(total, pad) for _, total in history]
+    fields = [
+        display_density(total, enhance_rings=case.enhance_rings) for _, total in history
+    ]
     vmax = max(density_vmax(f) for f in fields)
-
     frames: list[Image.Image] = []
     for t_val, field in zip((t for t, _ in history), fields):
         fig, ax = plt.subplots(figsize=(4.2, 4.2), constrained_layout=True)
@@ -312,9 +602,9 @@ def save_case_gif(
             vmax=1.0,
             interpolation="nearest",
         )
-        d_note = r"$0.05\,b$" if case.eden_diffusion else str(case.d)
+        d_note = rf"${case.d}\,b$" if case.nonlinear else str(case.d)
         ax.set_title(
-            f"({case.label}) {case.title}  $t={t_val:.0f}$\n$n_0$={case.n0}, $d$={d_note}",
+            f"({case.label}) {case.title}  $t={t_val:.0f}$\n$v_0$={case.v0}, $d$={d_note}",
             fontsize=9,
         )
         ax.axis("off")
@@ -326,19 +616,20 @@ def save_case_gif(
     return out_path
 
 
-def run_fig5(
-    cases: tuple[Fig5Case, ...] | None = None,
+def run_section4(
+    cases: tuple[ColonyCase, ...] | None = None,
     *,
-    ngrid: int | None = None,
+    L: float | None = None,
+    dx: float = 2.0,
     out_png: Path | None = None,
     save_gifs: bool = True,
     n_gif_frames: int | None = None,
 ) -> Path:
-    cases = cases or Fig5Case.default_fig5_cases()
-    quick = os.environ.get("MIMURA_FIG5_QUICK", "").strip().lower() in {"1", "true", "yes"}
-    ngrid = ngrid or (160 if quick else 220)
-    qscale = 0.55 if quick else 1.0
-    n_gif_frames = n_gif_frames or (48 if quick else 72)
+    cases = cases or ColonyCase.default_section4_cases()
+    quick = os.environ.get("MIMURA_QUICK", "").strip().lower() in {"1", "true", "yes"}
+    default_L = L or (320.0 if quick else 480.0)
+    qscale = 0.45 if quick else 1.0
+    n_gif_frames = n_gif_frames or (24 if quick else 40)
 
     n_cols = len(cases)
     fig, axes = plt.subplots(1, n_cols, figsize=(2.6 * n_cols, 2.8), constrained_layout=True)
@@ -347,39 +638,59 @@ def run_fig5(
 
     out_dir = Path(__file__).resolve().parent / "results"
     out_dir.mkdir(parents=True, exist_ok=True)
-    pad = exterior_buffer_pad(ngrid)
 
     for ax, case in zip(axes, cases):
+        case_dx = case.dx if case.dx is not None else dx
+        case_L = case.L if case.L is not None else default_L
+        if quick and case.dx is not None:
+            # Keep ring resolution finer than default even in quick mode.
+            case_dx = max(case.dx, 1.25)
+            case_L = min(case_L, 360.0)
+        print(
+            f"Section 4 ({case.label}) {case.title}: L={case_L:g}, dx={case_dx:g} ...",
+            flush=True,
+        )
         if save_gifs:
-            total, history = simulate_fig5_case(
-                case, ngrid=ngrid, quick_scale=qscale, n_frames=n_gif_frames
+            total, history = simulate_case(
+                case, L=case_L, dx=case_dx, quick_scale=qscale, n_frames=n_gif_frames
             )
-            gif_path = out_dir / f"mimura_bacterial_colony_fig5_{case.label}.gif"
-            save_case_gif(case, history, pad=pad, out_path=gif_path)
+            gif_path = out_dir / f"mimura_bacterial_colony_{case.label}.gif"
+            save_case_gif(case, history, out_path=gif_path)
             print(f"Saved {gif_path} ({len(history)} frames)")
         else:
-            total = simulate_fig5_case(case, ngrid=ngrid, quick_scale=qscale)
-        plot_fig5_panel(ax, total, case, pad=pad)
+            total = simulate_case(case, L=case_L, dx=case_dx, quick_scale=qscale)
+        plot_panel(ax, total, case)
 
     fig.suptitle(
-        "Mimura unified colony model — Fig. 5 (total cells $b+s$)\n"
-        "semi-implicit diffusion (FFT); exterior nutrient buffer; panel (b): $D=0.05\\,b$",
+        "Mimura–Sakaguchi–Matsushita (2000) — Section 4 morphologies ($b=u+w$)\n"
+        r"$a(u,v)=1/((1+u/a_1)(1+v/a_2))$, $a_1=1/2400$, $a_2=1/120$; "
+        r"Neumann 9-pt FD; (B): Eq.~(4.2) $d(b)=d\,b$",
         fontsize=10,
     )
 
-    out_png = out_png or out_dir / "mimura_bacterial_colony_fig5.png"
+    out_png = out_png or out_dir / "mimura_bacterial_colony_section4.png"
     fig.savefig(out_png, dpi=150, bbox_inches="tight")
     plt.close(fig)
     return out_png
 
 
 def main() -> None:
-    out = run_fig5()
-    print(f"Saved {out}")
-    for case in Fig5Case.default_fig5_cases():
+    skip_2d = os.environ.get("MIMURA_SECTION3_ONLY", "").strip().lower() in {"1", "true", "yes"}
+    out3 = run_section3()
+    print(f"Section 3 done: {out3}")
+    for case in Section3Case.default_fig32_cases():
+        print(f"  Fig.3.2({case.label}) {case.title}: d={case.d}, v0={case.v0}")
+
+    if skip_2d:
+        return
+
+    out4 = run_section4()
+    print(f"Section 4 done: {out4}")
+    for case in ColonyCase.default_section4_cases():
+        mode = "nonlinear" if case.nonlinear else "normal"
         print(
-            f"  ({case.label}) n0={case.n0}, d={case.d}, a0={case.a0}, "
-            f"eden={case.eden_diffusion}"
+            f"  ({case.label}) {case.title}: v0={case.v0}, d={case.d}, "
+            f"{mode}, t_final={case.t_final}"
         )
 
 

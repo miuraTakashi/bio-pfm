@@ -28,6 +28,12 @@ $$
 - 上皮頂点モデルのレビュー的整理: Alt, S., Ganguly, P., & Salbreux, G. (2017). Vertex models: from cell mechanics to tissue morphogenesis. *Philosophical Transactions of the Royal Society B*, 372(1720), 20150520. <https://doi.org/10.1098/rstb.2015.0520>
 - Farhadifar, R., et al. (2007). The influence of cell mechanics, cell–cell interactions, and proliferation on epithelial packing. *Current Biology*, 17(24), 2095–2104. <https://doi.org/10.1016/j.cub.2007.11.049>
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトはアトラス用のデモ実装であり、第三者の公開ソースの転載ではない（Mathematica ノートの 1:1 移植でもない）。面積・周長・線張力のエネルギーは Nagai–Honda / Farhadifar 系の公開ソルバと近いが、言語・データ構造は異なる。
+
+- Chaste `NagaiHondaForce`（C++）: <https://chaste.github.io/doxygen-releases/release_2018.1/classNagaiHondaForce.html>
+
 ## 数値計算スキーム
 
 - Voronoi 由来の周期メッシュで初期化（既定 `layout="grid"`）。

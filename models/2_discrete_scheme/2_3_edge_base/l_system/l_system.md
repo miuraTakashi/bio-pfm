@@ -20,6 +20,12 @@
 - Prusinkiewicz, P., & Lindenmayer, A. (1990). *The Algorithmic Beauty of Plants*. Springer.
 - **Mathematica**: [`L-system.nb`](../../../../Mathematica/2_discrete_scheme/2_3_edge_base/l_system/L-system.nb)
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは上記 Mathematica ノートからの移植であり、下記サイトのソースを転載したものではない。`F`/`+`/`-`/`[`/`]` のタートル解釈は ABOP 以来の標準で、公開実装と手順が近い。
+
+- Rocha, L. M. *Lab 2: Lindenmayer Systems*（分岐記号のスタック解釈）: <https://casci.binghamton.edu/academics/i-bic/lab2/>
+
 ## 数値計算スキーム
 
 [`l_system.py`](l_system.py) を参照（文字列反復＋タートル幾何）。

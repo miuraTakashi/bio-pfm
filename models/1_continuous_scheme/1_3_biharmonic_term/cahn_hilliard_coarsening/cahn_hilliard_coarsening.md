@@ -30,6 +30,12 @@ $$
 - Cahn, J. W., & Hilliard, J. E. (1958). Free energy of a nonuniform system. I. Interfacial free energy. *J. Chem. Phys.*, 28(2), 258–267.
 - **Mathematica**: 上記 `1.1.4.Cahn-Hilliard.nb`
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは Mathematica ノートを参考に、アトラス内の FFT 半陰式（`phase_field_branching.py` と同系）で再実装したものであり、下記リポジトリのソースを転載したものではない。線形 $k^4$ 項を陰的、非線形 $f(u)$ を陽的にするスペクトル更新は標準手法で、公開実装と式が近い。
+
+- Soares, E. *PyCahnHilliard*（擬スペクトル半陰式）: <https://github.com/elvissoares/PyCahnHilliard>
+
 ## 数値計算スキーム
 
 - 線形拡散項 $(\varepsilon^2 k^4)$ を陰的、非線形 $f(u)$ を陽的。

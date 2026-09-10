@@ -28,6 +28,12 @@ $$
 
 - Vicsek, T., Czirók, A., Ben-Jacob, E., Cohen, I., & Shochet, O. (1995). Novel type of phase transition in a system of self-driven particles. *Physical Review Letters*, 75(6), 1226–1229. <https://doi.org/10.1103/PhysRevLett.75.1226>
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは Vicsek et al. (1995) の更新則のデモ用再実装であり、下記サイトのソースを転載したものではない。近傍平均＋角度ノイズという更新は公開ミニマル実装と近いが、本実装は全対全の最小像距離（`cKDTree` 不使用）である。
+
+- Turci, F. *Minimal Vicsek model in Python*（`scipy.spatial.cKDTree` による近傍）: <https://francescoturci.wordpress.com/2020/06/19/minimal-vicsek-model-in-python/>
+
 ## 数値計算スキーム
 
 - 時間離散（Vicsek の標準更新則）

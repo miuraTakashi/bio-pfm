@@ -77,3 +77,9 @@ python3 amari_neural_field.py
 
 - S. Amari, *Dynamics of pattern formation in lateral-inhibition type neural fields*, Biol. Cybernetics **27**, 77-87 (1977)
 - 同梱論文: [`BF00337259.pdf`](BF00337259.pdf)
+
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは Amari (1977) の式に基づくアトラス用実装であり、下記リポジトリのソースを転載したものではない。メキシカンハット核＋畳み込みという構成は公開の neural field デモと近い。
+
+- Wojtak, W. *neural-fields-python*: <https://github.com/w-wojtak/neural-fields-python>

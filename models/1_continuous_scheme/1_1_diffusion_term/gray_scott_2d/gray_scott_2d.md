@@ -20,6 +20,15 @@ Gray–Scott 反応–拡散系（2 成分、拡散係数比と反応項で多�
 - 各 (F, k) の代表点: Munafo, *Pearson's Classification*（xmorphia） <https://mrob.com/pub/comp/xmorphia/pearson-classes.html>
 - **Mathematica**: [`1.1.11.GrayScott.nb`](../../../../Mathematica/1_continuous_scheme/1_1_diffusion_term/gray_scott_1d/1.1.11.GrayScott.nb)
 
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは上記 Mathematica ノートからの移植・拡張であり、下記サイトのソースを転載したものではない。ただし `simulate_gray_scott_2d` の既定 `Du=0.16`, `Dv=0.08`, `F=0.035`, `k=0.065` と中央正方形種 $(u,v)=(1/2,1/4)$ は、Web 上の Gray–Scott デモで広く共有される組であり、類似度が高い。
+
+- Rougier, N. P. `gray-scott.py`（パラメータ注記: aliensaint RD アプレット）。<https://github.com/rougier/numpy-tutorial/blob/master/scripts/gray-scott.py> および <https://www.labri.fr/perso/nrougier/from-python-to-numpy/code/gray_scott.py>
+- aliensaint Gray–Scott アプレット（Rougier がパラメータ出典として記載）: <http://www.aliensaint.com/uo/java/rd/>
+- Sims, K. *Reaction-Diffusion Tutorial*（Gray–Scott デモの普及元。拡散係数のスケールは本実装と異なる）: <https://www.karlsims.com/rd.html>
+- 周期境界 5 点ラプラシアンを `np.roll` で書く型: 例 <https://github.com/alifelab/alife_book_src/blob/master/chap02/gray_scott.py>（拡散係数の物理スケールは本実装と異なる）
+
 ## 数値計算スキーム
 
 [`gray_scott_2d.py`](gray_scott_2d.py) を参照（周期境界・陽的オイラー）。出力は **Pearson (1993) 図3に相当する 12 パラメータ**を **4 行×3 列**で可視化。

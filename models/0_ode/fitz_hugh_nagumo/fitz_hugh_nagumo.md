@@ -24,6 +24,13 @@ $$
 - FitzHugh, R. (1961). Impulses and physiological states in theoretical models of nerve membrane. *Biophysical Journal*, 1(6), 445–466. <https://doi.org/10.1016/S0006-3495(61)86902-6>
 - Nagumo, J., Arimoto, S., & Yoshizawa, S. (1962). An active pulse transmission line simulating nerve axon. *Proceedings of the IRE*, 50(10), 2061–2070. <https://doi.org/10.1109/JRPROC.1962.288235>
 - 総説・教科書的整理: Izhikevich, E. M. (2007). *Dynamical Systems in Neuroscience: The Geometry of Excitability and Bursting* (FIT 型モデルの文脈). MIT Press. <https://doi.org/10.7551/mitpress/2526.001.0001>
+- **Mathematica（移植元）**: [`FitzHughNagumo.nb`](../../../../Mathematica/0_ode/fitz_hugh_nagumo/FitzHughNagumo.nb)
+
+### 公開実装との類似（コード出典の注記）
+
+本スクリプトは上記 Mathematica ノートからの移植であり、下記のソースを転載したものではない。立方非線形 $v-v^3/3-w+I$ の位相平面デモは教育用コードで頻出する。$a=0.7$, $b=0.8$, $\tau=10$ は FitzHugh の標準パラメータである。
+
+- Gerstner, W., et al. *neuronaldynamics-exercises* `fitzhugh_nagumo`（位相平面。反応項の係数配置は本実装と異なる）: <https://neuronaldynamics-exercises.readthedocs.io/en/latest/_modules/neurodynex/phase_plane_analysis/fitzhugh_nagumo.html>
 
 ## 数値計算スキーム
 
